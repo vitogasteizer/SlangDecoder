@@ -19,6 +19,7 @@
         -moz-osx-font-smoothing: grayscale;
       }
     </style>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="importmap">
 {
   "imports": {
@@ -32,6 +33,6 @@
 </head>
   <body class="bg-gray-50">
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    <script type="text/babel" data-type="module" src="index.tsx"></script>
   </body>
 </html>
