@@ -1,0 +1,20 @@
+
+{
+  "appTitle": "Decodificador Secreto",
+  "appSubtitle": "Una guía para padres sobre el lenguaje secreto de los adolescentes en redes sociales.",
+  "searchPlaceholder": "Busca un código, emoji o palabra...",
+  "noResults": "No se encontraron resultados para",
+  "tryAnotherSearch": "Intenta con otro término de búsqueda.",
+  "startTyping": "Empieza a escribir para buscar un código.",
+  "resultsAppearHere": "Los resultados aparecerán aquí.",
+  "footerText": "Teen Slang Decoder. Un proyecto para mantener a los jóvenes seguros.",
+  "search": "Buscar",
+  "library": "Biblioteca",
+  "selectLanguage": "Seleccionar Idioma",
+  "dangerous": "Peligroso",
+  "predator": "Usado por Depredadores",
+  "harmless": "Inofensivo",
+  "libraryTitle": "Biblioteca de Códigos",
+  "libraryDescription": "Explora la lista completa de códigos y jergas, organizados por categoría de riesgo.",
+  "explanationError": "Error al obtener la explicación."
+}
