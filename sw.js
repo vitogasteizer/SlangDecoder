@@ -1,21 +1,13 @@
-const CACHE_NAME = 'teen-slang-decoder-v1';
+const CACHE_NAME = 'teen-slang-decoder-v2'; // Bumped cache version
 const urlsToCache = [
   './',
   './index.html',
   './index.tsx',
   './manifest.json',
   './metadata.json',
-  './App.tsx',
-  './types.ts',
-  './components/Header.tsx',
-  './components/Library.tsx',
-  './components/Search.tsx',
-  './contexts/LanguageContext.tsx',
-  './data/codes.ts',
   './locales/en.json',
   './locales/es.json',
   './locales/ka.json',
-  './services/geminiService.ts',
   // External assets
   'https://cdn.tailwindcss.com',
   'https://i.postimg.cc/8zSXV3Rt/Slang-Decoder.png',
