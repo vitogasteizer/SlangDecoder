@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Teen Slang Decoder</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="manifest" href="/SlangDecoder/manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#4f46e5">
     <link rel="icon" href="https://i.postimg.cc/8zSXV3Rt/Slang-Decoder.png" type="image/png">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/8zSXV3Rt/Slang-Decoder.png">
@@ -33,11 +33,11 @@
 </head>
   <body class="bg-gray-50">
     <div id="root"></div>
-    <script type="text/babel" data-type="module" src="/SlangDecoder/index.tsx"></script>
+    <script type="text/babel" data-type="module" src="./index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/SlangDecoder/sw.js').then(registration => {
+          navigator.serviceWorker.register('./sw.js').then(registration => {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
           }, err => {
             console.log('ServiceWorker registration failed: ', err);
