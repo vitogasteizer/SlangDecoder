@@ -1,9 +1,7 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode, useMemo } from 'react';
 import { Code } from '../types';
-import { CODES_ES } from '../data/codes.es';
-import { CODES_EN } from '../data/codes.en';
-import { CODES_KA } from '../data/codes.ka';
+import { CODES_MASTER } from '../data/codes';
 
 
 type Language = 'es' | 'en' | 'ka';
@@ -13,19 +11,12 @@ interface LanguageContextType {
   setLanguage: (lang: Language) => void;
   t: (key: string) => string;
   codes: Code[];
-  allCodes: Code[];
 }
-
-const codeData: Record<Language, Code[]> = {
-  es: CODES_ES,
-  en: CODES_EN,
-  ka: CODES_KA,
-};
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [lang, setLang] = useState<Language>('es');
+  const [lang, setLang] = useState<Language>('en');
   const [translations, setTranslations] = useState<Record<string, Record<string, string>> | null>(null);
 
   useEffect(() => {
@@ -37,9 +28,9 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     const fetchTranslations = async () => {
       try {
         const [esRes, enRes, kaRes] = await Promise.all([
-          fetch('locales/es.json'),
-          fetch('locales/en.json'),
-          fetch('locales/ka.json'),
+          fetch('./locales/es.json'),
+          fetch('./locales/en.json'),
+          fetch('./locales/ka.json'),
         ]);
         if (!esRes.ok || !enRes.ok || !kaRes.ok) {
           throw new Error('Failed to fetch translation files');
@@ -56,18 +47,20 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     };
     fetchTranslations();
   }, []);
-
-  const allCodes = useMemo(() => {
-    const esCodesWithLang = CODES_ES.map(code => ({ ...code, lang: 'es' as const }));
-    const enCodesWithLang = CODES_EN.map(code => ({ ...code, lang: 'en' as const }));
-    const kaCodesWithLang = CODES_KA.map(code => ({ ...code, lang: 'ka' as const }));
-    return [...esCodesWithLang, ...enCodesWithLang, ...kaCodesWithLang];
-  }, []);
-
+  
   const t = (key: string): string => {
-    if (!translations) return ''; // Return empty string or key if not loaded
-    return translations[lang]?.[key] || key;
+    if (!translations) return key; // Return key if not loaded
+    return translations[lang]?.[key] || translations['en']?.[key] || key;
   };
+
+  const codes: Code[] = useMemo(() => {
+    if (!translations) return [];
+    return CODES_MASTER.map(masterCode => ({
+      ...masterCode,
+      meaning: t(masterCode.meaningKey)
+    }));
+  }, [lang, translations]);
+
 
   if (!translations) {
     return (
@@ -81,8 +74,7 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
     lang,
     setLanguage: setLang,
     t,
-    codes: codeData[lang],
-    allCodes: allCodes,
+    codes,
   };
 
   return (

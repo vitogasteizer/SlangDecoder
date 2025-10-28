@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { Code, CodeCategory } from '../types';
 import getExplanation from '../services/geminiService';
@@ -40,7 +41,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ code, onSelect, isActive, expla
           <p className="text-gray-600">{code.meaning}</p>
         </div>
         <div className="flex items-center space-x-2">
-          {code.lang && <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700 border border-gray-400">{code.lang.toUpperCase()}</span>}
           <span className={`px-2 py-1 text-xs font-semibold rounded-full ${styles.bg} ${styles.text} border ${styles.border}`}>{categoryText}</span>
         </div>
       </div>
@@ -58,7 +58,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ code, onSelect, isActive, expla
 };
 
 const Search: React.FC = () => {
-  const { t, lang, allCodes } = useLanguage();
+  const { t, lang, codes } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCode, setActiveCode] = useState<Code | null>(null);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
@@ -83,23 +83,23 @@ const Search: React.FC = () => {
       return [];
     }
     const lowerCaseSearchTerm = searchTerm.toLowerCase();
-    return allCodes.filter(
+    return codes.filter(
       code =>
         code.code.toLowerCase().includes(lowerCaseSearchTerm) ||
         code.meaning.toLowerCase().includes(lowerCaseSearchTerm)
     );
-  }, [searchTerm, allCodes]);
+  }, [searchTerm, codes]);
 
   const handleSelectCode = useCallback(async (code: Code) => {
-    if (activeCode?.code === code.code && activeCode?.lang === code.lang) {
+    if (activeCode?.id === code.id) {
       setActiveCode(null);
       return;
     }
 
     setActiveCode(code);
     
-    const cacheKey = `${lang}:${code.code}`;
-    const responseKey = `${code.code}-${code.lang}`;
+    const cacheKey = `${lang}:${code.id}`;
+    const responseKey = `${code.id}`;
 
     if (geminiCache.current.has(cacheKey)) {
       setGeminiResponses(prev => ({ ...prev, [responseKey]: geminiCache.current.get(cacheKey)! }));
@@ -154,12 +154,12 @@ const Search: React.FC = () => {
       <div className="space-y-4">
         {searchTerm.trim() !== '' && filteredCodes.length > 0 && filteredCodes.map(code => (
           <ResultCard
-            key={`${code.code}-${code.lang}`}
+            key={code.id}
             code={code}
             onSelect={handleSelectCode}
-            isActive={activeCode?.code === code.code && activeCode?.lang === code.lang}
-            explanation={geminiResponses[`${code.code}-${code.lang}`] || null}
-            isLoading={loadingStates[`${code.code}-${code.lang}`] || false}
+            isActive={activeCode?.id === code.id}
+            explanation={geminiResponses[code.id.toString()] || null}
+            isLoading={loadingStates[code.id.toString()] || false}
             categoryText={t(code.category)}
           />
         ))}

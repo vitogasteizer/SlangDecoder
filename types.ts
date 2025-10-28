@@ -1,12 +1,17 @@
+
 export enum CodeCategory {
   DANGEROUS = 'dangerous',
   PREDATOR = 'predator',
   HARMLESS = 'harmless'
 }
 
-export interface Code {
+export interface CodeDefinition {
+  id: number;
   code: string;
-  meaning: string;
+  meaningKey: string;
   category: CodeCategory;
-  lang?: 'en' | 'es' | 'ka';
+}
+
+export interface Code extends CodeDefinition {
+  meaning: string;
 }

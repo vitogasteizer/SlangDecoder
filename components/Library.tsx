@@ -12,11 +12,11 @@ const categoryStyles: { [key in CodeCategory]: { border: string; bg: string; tex
 };
 
 const Library: React.FC = () => {
-  const { t, allCodes } = useLanguage();
+  const { t, codes } = useLanguage();
 
   const groupedCodes = useMemo(() => {
     const groups: { [key in CodeCategory]?: Code[] } = {};
-    for (const code of allCodes) {
+    for (const code of codes) {
       if (!groups[code.category]) {
         groups[code.category] = [];
       }
@@ -27,7 +27,7 @@ const Library: React.FC = () => {
       groups[category as CodeCategory]?.sort((a, b) => a.code.localeCompare(b.code));
     }
     return groups;
-  }, [allCodes]);
+  }, [codes]);
 
   const handleScrollToCategory = (categoryKey: CodeCategory) => {
     const element = document.getElementById(categoryKey);
@@ -72,12 +72,11 @@ const Library: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200">
                 {codesForCategory.map(code => (
-                   <div key={`${code.code}-${code.lang}`} className="p-4 bg-white flex justify-between items-start">
+                   <div key={code.id} className="p-4 bg-white flex justify-between items-start">
                      <div>
                        <p className="font-bold text-gray-800 text-lg">{code.code}</p>
                        <p className="text-gray-600">{code.meaning}</p>
                      </div>
-                     {code.lang && <span className="flex-shrink-0 ml-2 px-2 py-1 text-xs font-semibold rounded-full bg-gray-200 text-gray-700 border border-gray-400">{code.lang.toUpperCase()}</span>}
                    </div>
                 ))}
               </div>
